@@ -62,12 +62,11 @@ router.post('/', (req, res, next) => {
 });
 
 /**
- * GET /api/books/:id
+ * GET /api/data/:id
  *
- * Retrieve a book.
  */
-router.get('/:book', (req, res, next) => {
-  getModel().read(req.params.book, (err, entity) => {
+router.get('/:id', (req, res, next) => {
+  getModel().read(req.params.id, (err, entity) => {
     if (err) {
       next(err);
       return;
@@ -77,12 +76,11 @@ router.get('/:book', (req, res, next) => {
 });
 
 /**
- * PUT /api/books/:id
+ * PUT /api/data/
  *
- * Update a book.
  */
-router.put('/:id', (req, res, next) => {
-  getModel().update(req.params.id, req.body, (err, entity) => {
+router.put('/', (req, res, next) => {
+  getModel().update(req.body, (err, entity) => {
     if (err) {
       next(err);
       return;
@@ -92,9 +90,8 @@ router.put('/:id', (req, res, next) => {
 });
 
 /**
- * DELETE /api/books/:id
+ * DELETE /api/data/
  *
- * Delete a book.
  */
 router.delete('/', (req, res, next) => {
   getModel().delete((err) => {
@@ -107,7 +104,7 @@ router.delete('/', (req, res, next) => {
 });
 
 /**
- * Errors on "/api/books/*" routes.
+ * Errors on "/api/data/*" routes.
  */
 router.use((err, req, res, next) => {
   // Format error and forward to generic error handler for logging and

@@ -20,7 +20,8 @@ const config = require('../config');
 const options = {
   user: config.get('MYSQL_USER'),
   password: config.get('MYSQL_PASSWORD'),
-  database: 'test1'
+  database: 'test1',
+  debug: false
 };
 
 if (config.get('INSTANCE_CONNECTION_NAME') && config.get('NODE_ENV') === 'production') {
@@ -94,19 +95,19 @@ function read (id, cb) {
 }
 
 // [START update]
-function update (id, data, cb) {
+function update (data, cb) {
   var values = [];
-  
   for(var i=0; i< data.length; i++)
-      values.push([data[i].label]);
+    values.push([data[i].id,data[i].label]);
 
   connection.query(
-    'UPDATE `data1` SET label = ? WHERE `id` = ?', [values, id], (err) => {
+    'INSERT INTO `data1` (id,label) VALUES ? ON DUPLICATE KEY UPDATE label=VALUES(label)', [values], (err) => {
+    //'UPDATE `data1` SET label = ? WHERE `id` = ?', [values, id], (err) => {
       if (err) {
         cb(err);
         return;
       }
-      read(id, cb);
+      readAll(cb);
     });
 }
 // [END update]
